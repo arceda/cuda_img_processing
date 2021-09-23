@@ -82,12 +82,22 @@
   <ItemGroup>
     <CudaCompile Include="1_histogram.cu" />
     <CudaCompile Include="2_equalize.cu" />
+    <CudaCompile Include="3_global.cu" />
+    <CudaCompile Include="4_arithmetics.cu" />
     <CudaCompile Include="kernel.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="1_histogram.h" />
     <ClInclude Include="2_equalize.h" />
+    <ClInclude Include="3_global.h" />
+    <ClInclude Include="4_arithmetics.h" />
     <ClInclude Include="utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="aqp.jpg" />
+    <Image Include="lena.jpg" />
+    <Image Include="lena2.jpg" />
+    <Image Include="leon.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

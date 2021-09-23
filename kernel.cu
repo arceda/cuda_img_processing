@@ -1,6 +1,8 @@
 ﻿
 #include "1_histogram.h"
 #include "2_equalize.h"
+#include "3_global.h"
+#include "4_arithmetics.h"
 #include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -70,6 +72,68 @@ void equalize_hist(Mat img) {
     //show_vec(new_img_vec, 256);
 }
 
+void aply_function(Mat img) {
+    //int*** data = create_tensor_int(img.rows, img.cols, img.channels());
+    //mat_to_tensor(img, data);
+    //show_tensor(data, img.rows, img.cols, img.channels());
+
+    imshow("Image", img);
+    waitKey(0);
+    int vector_size = img.rows * img.cols;
+    //cout << "rows: " << img.rows << " cols: " << img.cols << endl;
+
+    int* blue = new int[vector_size];
+    int* green = new int[vector_size];
+    int* red = new int[vector_size];
+
+    int* output_blue = new int[vector_size];
+    int* output_green = new int[vector_size];
+    int* output_red = new int[vector_size];
+
+    mat_to_vec(img, blue, green, red);
+    global_func_cuda(blue, green, red, img.rows, img.cols, output_blue, output_green, output_red);
+    show_vec(output_blue, 100);
+
+    Mat new_img = vec_to_mat(output_blue, output_green, output_red, img.rows, img.cols);
+    imshow("Image global", new_img);
+    waitKey(0);
+}
+
+void arithmetics(Mat img_1, Mat img_2) {
+    //int*** data = create_tensor_int(img.rows, img.cols, img.channels());
+    //mat_to_tensor(img, data);
+    //show_tensor(data, img.rows, img.cols, img.channels());
+
+    imshow("Image 1", img_1);
+    imshow("Image 2", img_2);
+    waitKey(0);
+    int vector_size = img_1.rows * img_1.cols;
+    //cout << "rows: " << img.rows << " cols: " << img.cols << endl;
+
+    int* blue_1 = new int[vector_size];
+    int* green_1 = new int[vector_size];
+    int* red_1 = new int[vector_size];
+    int* blue_2 = new int[vector_size];
+    int* green_2 = new int[vector_size];
+    int* red_2 = new int[vector_size];
+
+    int* output_blue_1 = new int[vector_size];
+    int* output_green_1 = new int[vector_size];
+    int* output_red_1 = new int[vector_size];
+    int* output_blue_2 = new int[vector_size];
+    int* output_green_2 = new int[vector_size];
+    int* output_red_2 = new int[vector_size];
+
+    mat_to_vec(img_1, blue_1, green_1, red_1);
+    mat_to_vec(img_2, blue_2, green_2, red_2);
+    arithmetics_cuda(blue_1, green_1, red_1, img_1.rows, img_1.cols, output_blue_1, output_green_1, output_red_1);
+    show_vec(output_blue_1, 100);
+
+    Mat new_img = vec_to_mat(output_blue_1, output_green_1, output_red_1, img_1.rows, img_1.cols);
+    imshow("sum", new_img);
+    waitKey(0);
+}
+
 int main() {    
     // PREGUNTA 1
     Mat img = imread("D:\\CUDA\\HelloCUDAopenCV\\lena.jpg");
@@ -79,7 +143,16 @@ int main() {
     img = imread("D:\\CUDA\\HelloCUDAopenCV\\lena2.jpg");
     //equalize_hist(img);
 
-    
+    // PREGUNTA 3
+    img = imread("D:\\CUDA\\HelloCUDAopenCV\\lena.jpg");
+    //aply_function(img); 
+
+    // PREGUNTA 4
+    Mat img_1 = imread("D:\\CUDA\\HelloCUDAopenCV\\leon.jpg");
+    Mat img_2 = imread("D:\\CUDA\\HelloCUDAopenCV\\aqp.jpg");
+    arithmetics(img_1, img_2);
+
+
     return 0;
 
 }

@@ -27,6 +27,44 @@ void show_vec(float* arr, int len) {
     cout << endl;
 }
 
+void show_tensor(int*** data, int rows, int cols, int channels) {
+    for (int i = 0; i < rows; i++) {  
+        for (int j = 0; j < cols; j++) {
+            cout << "[";
+            for (int k = 0; k < channels; k++) {
+                cout<<data[i][j][k]<<" ";
+            }
+            cout << "] ; ";
+        }
+        cout << endl;
+    }
+}
+
+int*** create_tensor_int(int rows, int cols, int channels) {
+    int*** data = new int**[rows];
+    for (int i = 0; i < rows; i++) {
+        int** temp = new int*[cols];
+        data[i] = temp;
+           
+        for (int j = 0; j < channels; j++) {
+            int* temp2 = new int[channels];
+            data[i][j] = temp2;
+        }
+    }
+
+    return data;
+}
+
+void mat_to_tensor(Mat img, int*** data) {
+    for (int i = 0; i < img.rows; i++) {
+        for (int j = 0; j < img.cols; j++) {
+            data[i][j][0] = (int)(img.at<Vec3b>(i, j)[0]);
+            data[i][j][1] = (int)(img.at<Vec3b>(i, j)[1]);
+            data[i][j][2] = (int)(img.at<Vec3b>(i, j)[2]);
+        }
+    }
+}
+
 void mat_to_vec(Mat img, int* c_data) {    
     int index = 0;
     /*for (int i = 0; i < img.cols; i++) {
@@ -56,7 +94,21 @@ Mat vec_to_mat(int* c_data, int rows, int cols) {
             index += 1;
         }
     }
+    return image;
+}
 
+Mat vec_to_mat(int* blue, int* green, int* red, int rows, int cols) {
+    Mat image(rows, cols, CV_8UC3, cv::Scalar(0, 0, 0));
+
+    int index = 0;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            image.at<Vec3b>(i, j)[0] = blue[index];
+            image.at<Vec3b>(i, j)[1] = green[index];
+            image.at<Vec3b>(i, j)[2] = red[index];
+            index += 1;
+        }
+    }
     return image;
 }
 
