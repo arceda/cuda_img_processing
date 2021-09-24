@@ -87,6 +87,7 @@
     <CudaCompile Include="5_conv.cu" />
     <CudaCompile Include="6_zoon.cu" />
     <CudaCompile Include="7_geometrics.cu" />
+    <CudaCompile Include="8_search.cu" />
     <CudaCompile Include="kernel.cu" />
   </ItemGroup>
   <ItemGroup>
@@ -97,10 +98,13 @@
     <ClInclude Include="5_conv.h" />
     <ClInclude Include="6_zoon.h" />
     <ClInclude Include="7_geometrics.h" />
+    <ClInclude Include="8_search.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="aqp.jpg" />
+    <Image Include="cloud.jpg" />
+    <Image Include="clouds.jpg" />
     <Image Include="lena.jpg" />
     <Image Include="lena2.jpg" />
     <Image Include="leon.jpg" />

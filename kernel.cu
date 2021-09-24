@@ -6,6 +6,7 @@
 #include "5_conv.h"
 #include "6_zoon.h"
 #include "7_geometrics.h"
+#include "8_search.h"
 #include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -141,8 +142,8 @@ void convolutions(Mat img, float *kernel, int kernel_rows, int kernel_cols) {
     conv_cuda(img_vec, kernel, img.rows, img.cols, img.channels(), kernel_rows, kernel_cols, output);
     Mat img_result = vec_1d_to_mat(output, img.rows, img.cols);    
 
-    imshow("Image", img);               waitKey(0);
-    imshow("New Image", img_result);    waitKey(0);
+    imshow("Image original", img);           waitKey(0);
+    imshow("After convolution", img_result);    waitKey(0);
 }
 
 void zoon(Mat img) {
@@ -216,7 +217,30 @@ void geometrics(Mat img, int* x_1, int* y_1, int* x_2, int* y_2) {
 
     imshow("Original", img_input);    waitKey(0);
     imshow("Affine", img_result);     waitKey(0);
+}
 
+void search_pattern(Mat img, Mat img_pattern) {    
+    Mat img_input = img;
+    //cvtColor(img, img_input, COLOR_BGR2GRAY);
+    int vector_size = img_input.rows * img_input.cols * img_input.channels();
+    int vector_pattern_size = img_pattern.rows * img_pattern.cols * img_pattern.channels();
+
+    int* img_vec = new int[vector_size];
+    int* img_pattern_vec = new int[vector_pattern_size];
+    int* output = new int[vector_size];
+    int num_boxes;
+    mat_to_vec_1d(img_input, img_vec);
+    mat_to_vec_1d(img_pattern, img_pattern_vec);
+    search_pattern_cuda(    img_vec, img_pattern_vec, 
+                            img_input.rows, img_input.cols, 
+                            img_pattern.rows, img_pattern.cols,
+                            img_input.channels(), output, &num_boxes);
+    Mat img_result = vec_1d_to_mat(output, img_input.rows, img_input.cols);
+    cout << "Num bozes : " << num_boxes <<endl;
+
+    imshow("Image original", img_input);    waitKey(0);
+    imshow("Pattern", img_pattern);         waitKey(0);
+    imshow("Patterns finded", img_result);  waitKey(0);
 }
 
 int main() {    
@@ -270,8 +294,13 @@ int main() {
     img = imread("D:\\CUDA\\HelloCUDAopenCV\\orange.jpg");
     int x_1[] = { 0, 0, 10 };   int y_1[] = { 10, 0, 0 };    int x_2[] = { 0, 0, 5 };    int y_2[] = { 5, 0, 0 };
     int x_3[] = { 50, 200, 50 };   int y_3[] = { 50, 50, 200 };    int x_4[] = { 10, 200, 100 };    int y_4[] = { 100, 50, 250 };    
-    geometrics(img, x_1, y_1, x_2, y_2);
-    geometrics(img, x_3, y_3, x_4, y_4);
+    //geometrics(img, x_1, y_1, x_2, y_2);
+    //geometrics(img, x_3, y_3, x_4, y_4);
+
+    // PREGUNTA 8
+    img = imread("D:\\CUDA\\HelloCUDAopenCV\\clouds.jpg");
+    Mat img_pattern = imread("D:\\CUDA\\HelloCUDAopenCV\\cloud.jpg");
+    search_pattern(img, img_pattern);
 
     return 0;
 
