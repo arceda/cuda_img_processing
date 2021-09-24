@@ -5,6 +5,7 @@
 #include "4_arithmetics.h"
 #include "5_conv.h"
 #include "6_zoon.h"
+#include "7_geometrics.h"
 #include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -198,6 +199,26 @@ void zoon(Mat img) {
     
 }
 
+void geometrics(Mat img, int* x_1, int* y_1, int* x_2, int* y_2) {
+    float* M = new float[6]; // coeficient of M matrix for affine transformation
+    AffineSolver(M, x_1, y_1, x_2, y_2);
+    PrintMatrix(M);    
+
+    Mat img_input = img;
+    //cvtColor(img, img_input, COLOR_BGR2GRAY);
+    int vector_size = img_input.rows * img_input.cols * img_input.channels();
+
+    int* img_vec = new int[ vector_size ];
+    int* output = new int[ vector_size ];
+    mat_to_vec_1d(img_input, img_vec);
+    geometrics_cuda(img_vec, M, img_input.rows, img_input.cols, img_input.channels(), output);
+    Mat img_result = vec_1d_to_mat(output, img_input.rows, img_input.cols);
+
+    imshow("Original", img_input);    waitKey(0);
+    imshow("Affine", img_result);     waitKey(0);
+
+}
+
 int main() {    
     // PREGUNTA 1
     Mat img = imread("D:\\CUDA\\HelloCUDAopenCV\\lena.jpg");
@@ -243,10 +264,14 @@ int main() {
 
     // PREGUNTA 6
     img = imread("D:\\CUDA\\HelloCUDAopenCV\\orange.jpg");
-    zoon(img);
+    //zoon(img);
 
-
-
+    // PREGUNTA 7
+    img = imread("D:\\CUDA\\HelloCUDAopenCV\\orange.jpg");
+    int x_1[] = { 0, 0, 10 };   int y_1[] = { 10, 0, 0 };    int x_2[] = { 0, 0, 5 };    int y_2[] = { 5, 0, 0 };
+    int x_3[] = { 50, 200, 50 };   int y_3[] = { 50, 50, 200 };    int x_4[] = { 10, 200, 100 };    int y_4[] = { 100, 50, 250 };    
+    geometrics(img, x_1, y_1, x_2, y_2);
+    geometrics(img, x_3, y_3, x_4, y_4);
 
     return 0;
 

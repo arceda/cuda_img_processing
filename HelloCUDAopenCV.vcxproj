@@ -86,6 +86,7 @@
     <CudaCompile Include="4_arithmetics.cu" />
     <CudaCompile Include="5_conv.cu" />
     <CudaCompile Include="6_zoon.cu" />
+    <CudaCompile Include="7_geometrics.cu" />
     <CudaCompile Include="kernel.cu" />
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +96,7 @@
     <ClInclude Include="4_arithmetics.h" />
     <ClInclude Include="5_conv.h" />
     <ClInclude Include="6_zoon.h" />
+    <ClInclude Include="7_geometrics.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>

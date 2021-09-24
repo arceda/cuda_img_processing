@@ -209,4 +209,60 @@ void histDisplay(int histogram[], const char* name)
     waitKey(0);
 }
 
+
+
+/*
+*Function: Affine Solver
+*Role: Finds Affine Transforming mapping (X,Y) to (X',Y')
+*Input: double array[A,B,C,D,E,F],
+*   int array[X-Coordinates], int array[Y-Coordinates],
+*   int array[X'-Coordinates],int array[Y'-Coordinates]
+*Output:void - Fills double array[A,B,C,D,E,F]
+*/
+
+void AffineSolver(float* AtoF, int* X, int* Y, int* XP, int* YP)
+{
+    AtoF[0] = (float)(XP[1] * Y[0] - XP[2] * Y[0] - XP[0] * Y[1] + XP[2] * Y[1] + XP[0] * Y[2] - XP[1] * Y[2]) /
+        (float)(X[1] * Y[0] - X[2] * Y[0] - X[0] * Y[1] + X[2] * Y[1] + X[0] * Y[2] - X[1] * Y[2]);
+
+    AtoF[1] = (float)(XP[1] * X[0] - XP[2] * X[0] - XP[0] * X[1] + XP[2] * X[1] + XP[0] * X[2] - XP[1] * X[2]) /
+        (float)(-X[1] * Y[0] + X[2] * Y[0] + X[0] * Y[1] - X[2] * Y[1] - X[0] * Y[2] + X[1] * Y[2]);
+
+    AtoF[2] = (float)(YP[1] * Y[0] - YP[2] * Y[0] - YP[0] * Y[1] + YP[2] * Y[1] + YP[0] * Y[2] - YP[1] * Y[2]) /
+        (float)(X[1] * Y[0] - X[2] * Y[0] - X[0] * Y[1] + X[2] * Y[1] + X[0] * Y[2] - X[1] * Y[2]);
+
+    AtoF[3] = (float)(YP[1] * X[0] - YP[2] * X[0] - YP[0] * X[1] + YP[2] * X[1] + YP[0] * X[2] - YP[1] * X[2]) /
+        (float)(-X[1] * Y[0] + X[2] * Y[0] + X[0] * Y[1] - X[2] * Y[1] - X[0] * Y[2] + X[1] * Y[2]);
+
+    AtoF[4] = (float)(XP[2] * X[1] * Y[0] - XP[1] * X[2] * Y[0] - XP[2] * X[0] * Y[1] + XP[0] * X[2] * Y[1] +
+        XP[1] * X[0] * Y[2] - XP[0] * X[1] * Y[2]) /
+        (float)(X[1] * Y[0] - X[2] * Y[0] - X[0] * Y[1] + X[2] * Y[1] + X[0] * Y[2] - X[1] * Y[2]);
+
+    AtoF[5] = (float)(YP[2] * X[1] * Y[0] - YP[1] * X[2] * Y[0] - YP[2] * X[0] * Y[1] + YP[0] * X[2] * Y[1] + YP[1] * X[0] * Y[2] - YP[0] * X[1] * Y[2]) /
+        (float)(X[1] * Y[0] - X[2] * Y[0] - X[0] * Y[1] + X[2] * Y[1] + X[0] * Y[2] - X[1] * Y[2]);
+}
+
+/*
+*Function: PrintMatrix
+*Role: Prints 2*3 matrix as //a b e
+                //c d f
+*Input: double array[ABCDEF]
+*Output: voids
+*/
+
+void PrintMatrix(float* AtoF)
+{
+    printf("a = %f ", AtoF[0]);
+    printf("b = %f ", AtoF[1]);
+    printf("e = %f\n", AtoF[4]);
+    printf("c = %f ", AtoF[2]);
+    printf("d = %f ", AtoF[3]);
+    printf("f = %f ", AtoF[5]);
+}
+
+
+
+
+
+
 #endif
