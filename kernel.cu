@@ -130,13 +130,13 @@ void arithmetics(Mat img_1, Mat img_2) {
     imshow("div", img_div);    waitKey(0);
 }
 
-void convolutions(Mat img, int *kernel) {
+void convolutions(Mat img, float *kernel, int kernel_rows, int kernel_cols) {
     int vector_size = img.rows * img.cols;
     int* img_vec = new int[vector_size * 3];    
     int* output = new int[vector_size * 3];
     
     mat_to_vec_1d(img, img_vec);         
-    conv_cuda(img_vec, kernel, img.rows, img.cols, img.channels(), output);
+    conv_cuda(img_vec, kernel, img.rows, img.cols, img.channels(), kernel_rows, kernel_cols, output);
     Mat img_result = vec_1d_to_mat(output, img.rows, img.cols);    
 
     imshow("Image", img);               waitKey(0);
@@ -166,9 +166,24 @@ int main() {
 
     // PREGUNTA 5
     img = imread("D:\\CUDA\\HelloCUDAopenCV\\lena.jpg");
-    int kernel[] = { 0.1, 0.1, 0.1,   0.1, 0.1, 0.1,    0.1, 0.1, 0.1 }; // mean
-    convolutions(img, kernel);
+    float kernel[] = {
+            0.04, 0.04, 0.04, 0.04, 0.04,
+            0.04, 0.04, 0.04, 0.04, 0.04,
+            0.04, 0.04, 0.04, 0.04, 0.04,
+            0.04, 0.04, 0.04, 0.04, 0.04,
+            0.04, 0.04, 0.04, 0.04, 0.04
+    }; // mean
+    convolutions(img, kernel, 5, 5);
 
+    img = imread("D:\\CUDA\\HelloCUDAopenCV\\sub_10.jpg");
+    float kernel_sobel[] = {
+            2, 1, 0, -1, -2,
+            2, 1, 0, -1, -2,
+            4, 2, 0, -2, -4,
+            2, 1, 0, -1, -2,
+            2, 1, 0, -1, -2,
+    };
+    convolutions(img, kernel_sobel, 5, 5);
     return 0;
 
 }
