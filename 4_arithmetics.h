@@ -18,7 +18,7 @@ using namespace cv;
 using namespace std;
 
 //void global_func_cuda(int**, int, int, int**);
-void arithmetics_cuda(int*, int*, int*, int, int, int*, int*, int*);
+void arithmetics_cuda(int*, int*, int, int, int*, int*, int*, int*);
 
 #endif
 

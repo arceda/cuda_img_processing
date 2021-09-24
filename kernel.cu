@@ -110,28 +110,22 @@ void arithmetics(Mat img_1, Mat img_2) {
     int vector_size = img_1.rows * img_1.cols;
     //cout << "rows: " << img.rows << " cols: " << img.cols << endl;
 
-    int* blue_1 = new int[vector_size];
-    int* green_1 = new int[vector_size];
-    int* red_1 = new int[vector_size];
-    int* blue_2 = new int[vector_size];
-    int* green_2 = new int[vector_size];
-    int* red_2 = new int[vector_size];
+    int* img_vec_1 = new int[vector_size * 3];
+    int* img_vec_2 = new int[vector_size * 3];
+    int* output_1 = new int[vector_size * 3];
+    int* output_2 = new int[vector_size * 3];
+    int* output_3 = new int[vector_size * 3];
+    int* output_4 = new int[vector_size * 3];
 
-    int* output_blue_1 = new int[vector_size];
-    int* output_green_1 = new int[vector_size];
-    int* output_red_1 = new int[vector_size];
-    int* output_blue_2 = new int[vector_size];
-    int* output_green_2 = new int[vector_size];
-    int* output_red_2 = new int[vector_size];
+    mat_to_vec_1d(img_1, img_vec_1);
+    mat_to_vec_1d(img_2, img_vec_2);
 
-    mat_to_vec(img_1, blue_1, green_1, red_1);
-    mat_to_vec(img_2, blue_2, green_2, red_2);
-    arithmetics_cuda(blue_1, green_1, red_1, img_1.rows, img_1.cols, output_blue_1, output_green_1, output_red_1);
-    show_vec(output_blue_1, 100);
+    arithmetics_cuda(img_vec_1, img_vec_2, img_1.rows, img_1.cols, output_1, output_2, output_3, output_4);
+    show_vec(output_1, 100);
 
-    Mat new_img = vec_to_mat(output_blue_1, output_green_1, output_red_1, img_1.rows, img_1.cols);
+    Mat new_img = vec_1d_to_mat(output_1, img_1.rows, img_1.cols);
     imshow("sum", new_img);
-    waitKey(0);
+    waitKey(0);   
 }
 
 int main() {    

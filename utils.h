@@ -137,6 +137,38 @@ void mat_to_vec(Mat img, int* c_blue, int* c_green, int* c_red) {
     }
 }
 
+// convierte un vector de 1d (rows*cols*channles) a un Mat
+Mat vec_1d_to_mat(int* data, int rows, int cols) {
+    Mat image(rows, cols, CV_8UC3, cv::Scalar(0, 0, 0));
+    int size = rows * cols;
+    int index = 0;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            image.at<Vec3b>(i, j)[0] = data[index];
+            image.at<Vec3b>(i, j)[1] = data[index + size];
+            image.at<Vec3b>(i, j)[2] = data[index + size*2];
+            index += 1;
+        }
+    }
+    return image;
+}
+
+// convierte un Mat en un vector de enteros, este vector contine tambien todos los canales
+void mat_to_vec_1d(Mat img, int* data) {
+    int vector_size = img.rows * img.cols;    
+
+    //cout << "channels " << img.channels();
+    int index = 0;
+    for (int i = 0; i < img.cols; i++) {
+        for (int j = 0; j < img.rows; j++) {
+            data[index] = (int)(img.at<Vec3b>(i, j)[0]);
+            data[index + vector_size] = (int)(img.at<Vec3b>(i, j)[1]);
+            data[index + vector_size*2] = (int)(img.at<Vec3b>(i, j)[2]);
+            index += 1;
+        }
+    }
+}
+
 void histDisplay(int histogram[], const char* name)
 {
     int hist[256];
