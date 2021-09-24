@@ -156,14 +156,16 @@ Mat vec_1d_to_mat(int* data, int rows, int cols) {
 // convierte un Mat en un vector de enteros, este vector contine tambien todos los canales
 void mat_to_vec_1d(Mat img, int* data) {
     int vector_size = img.rows * img.cols;    
+    //cout << "rows:" << img.rows << "cols:" << img.cols << endl;
 
     //cout << "channels " << img.channels();
     int index = 0;
-    for (int i = 0; i < img.cols; i++) {
-        for (int j = 0; j < img.rows; j++) {
-            data[index] = (int)(img.at<Vec3b>(i, j)[0]);
-            data[index + vector_size] = (int)(img.at<Vec3b>(i, j)[1]);
-            data[index + vector_size*2] = (int)(img.at<Vec3b>(i, j)[2]);
+    for (int i = 0; i < img.rows; i++) {
+        for (int j = 0; j < img.cols; j++) {
+            //cout << i << " " << j << " " << end;
+            data[index] =                   (int)(img.at<Vec3b>(i, j)[0]);
+            data[index + vector_size] =     (int)(img.at<Vec3b>(i, j)[1]);
+            data[index + vector_size*2] =   (int)(img.at<Vec3b>(i, j)[2]);
             index += 1;
         }
     }

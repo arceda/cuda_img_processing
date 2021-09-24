@@ -98,6 +98,8 @@
     <Image Include="lena.jpg" />
     <Image Include="lena2.jpg" />
     <Image Include="leon.jpg" />
+    <Image Include="sub_10.jpg" />
+    <Image Include="sub_11.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -99,14 +99,7 @@ void aply_function(Mat img) {
     waitKey(0);
 }
 
-void arithmetics(Mat img_1, Mat img_2) {
-    //int*** data = create_tensor_int(img.rows, img.cols, img.channels());
-    //mat_to_tensor(img, data);
-    //show_tensor(data, img.rows, img.cols, img.channels());
-
-    imshow("Image 1", img_1);
-    imshow("Image 2", img_2);
-    waitKey(0);
+void arithmetics(Mat img_1, Mat img_2) {      
     int vector_size = img_1.rows * img_1.cols;
     //cout << "rows: " << img.rows << " cols: " << img.cols << endl;
 
@@ -119,13 +112,21 @@ void arithmetics(Mat img_1, Mat img_2) {
 
     mat_to_vec_1d(img_1, img_vec_1);
     mat_to_vec_1d(img_2, img_vec_2);
-
+    //show_vec(img_vec_1, 100);      
+    
     arithmetics_cuda(img_vec_1, img_vec_2, img_1.rows, img_1.cols, output_1, output_2, output_3, output_4);
-    show_vec(output_1, 100);
+    //show_vec(output_1, 100);
+    Mat img_sum = vec_1d_to_mat(output_1, img_1.rows, img_1.cols);
+    Mat img_mul = vec_1d_to_mat(output_2, img_1.rows, img_1.cols);
+    Mat img_sub = vec_1d_to_mat(output_3, img_1.rows, img_1.cols);
+    Mat img_div = vec_1d_to_mat(output_4, img_1.rows, img_1.cols);
 
-    Mat new_img = vec_1d_to_mat(output_1, img_1.rows, img_1.cols);
-    imshow("sum", new_img);
-    waitKey(0);   
+    imshow("Image 1", img_1);    waitKey(0);
+    imshow("Image 2", img_2);    waitKey(0);    
+    imshow("sum", img_sum);    waitKey(0);      
+    imshow("mul", img_mul);    waitKey(0);
+    imshow("sub", img_sub);    waitKey(0);
+    imshow("div", img_div);    waitKey(0);
 }
 
 int main() {    
@@ -144,8 +145,10 @@ int main() {
     // PREGUNTA 4
     Mat img_1 = imread("D:\\CUDA\\HelloCUDAopenCV\\leon.jpg");
     Mat img_2 = imread("D:\\CUDA\\HelloCUDAopenCV\\aqp.jpg");
+    Mat img_3 = imread("D:\\CUDA\\HelloCUDAopenCV\\sub_10.jpg");
+    Mat img_4 = imread("D:\\CUDA\\HelloCUDAopenCV\\sub_11.jpg");
     arithmetics(img_1, img_2);
-
+    arithmetics(img_3, img_4);
 
     return 0;
 
