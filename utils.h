@@ -66,13 +66,7 @@ void mat_to_tensor(Mat img, int*** data) {
 }
 
 void mat_to_vec(Mat img, int* c_data) {    
-    int index = 0;
-    /*for (int i = 0; i < img.cols; i++) {
-        for (int j = 0; j < img.rows; j++) {
-            c_data[index] = (int)(img.at<uchar>(i, j));
-            index += 1;
-        }
-    }*/
+    int index = 0;  
     for (int i = 0; i < img.rows; i++) {
         for (int j = 0; j < img.cols; j++) {
             c_data[index] = (int)(img.at<uchar>(i, j));
@@ -125,8 +119,10 @@ void mat_to_vec(Mat img, int* c_blue, int* c_green, int* c_red) {
 
     //cout << "channels " << img.channels();
     int index = 0;
-    for (int i = 0; i < img.cols; i++) {
-        for (int j = 0; j < img.rows; j++) {
+    //for (int i = 0; i < img.cols; i++) {
+    //    for (int j = 0; j < img.rows; j++) {
+    for (int i = 0; i < img.rows; i++) {
+        for (int j = 0; j < img.cols; j++) {
             c_blue[index] = (int)(img.at<Vec3b>(i, j)[0]);
             c_green[index] = (int)(img.at<Vec3b>(i, j)[1]);
             c_red[index] = (int)(img.at<Vec3b>(i, j)[2]);

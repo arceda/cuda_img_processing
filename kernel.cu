@@ -4,6 +4,7 @@
 #include "3_global.h"
 #include "4_arithmetics.h"
 #include "5_conv.h"
+#include "6_zoon.h"
 #include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -143,6 +144,60 @@ void convolutions(Mat img, float *kernel, int kernel_rows, int kernel_cols) {
     imshow("New Image", img_result);    waitKey(0);
 }
 
+void zoon(Mat img) {
+    Mat grey;
+    cvtColor(img, grey, COLOR_BGR2GRAY);
+    int vector_size = img.rows * img.cols;
+    //int* img_vec = new int[vector_size * img.channels()];
+    //int* output = new int[vector_size * 2 * img.channels()];
+    //mat_to_vec_1d(img, img_vec);
+    //zoon_cuda(img_vec, img.rows, img.cols, img.channels(),  output);
+    //Mat img_result = vec_1d_to_mat(output, img.rows, img.cols);
+
+
+    /*int length = 9;
+    int rows = 3; int cols = 3;
+    int* img_vec = new int[length];
+    img_vec[0] = 100; img_vec[1] = 200; img_vec[2] = 300; img_vec[3] = 400; img_vec[4] = 500;
+    img_vec[5] = 600; img_vec[6] = 700; img_vec[7] = 800; img_vec[8] = 900;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cout << img_vec[i * cols + j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+
+    int* output = new int[length * 4];
+    zoon_cuda(img_vec, rows, cols, 1, output);
+    
+    cout << endl << "output\n";
+    for (int i = 0; i < rows*2; i++) {
+        for (int j = 0; j < cols*2; j++) {
+            cout << output[i * cols * 2 + j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+    */
+
+
+
+    int* img_vec = new int[vector_size];
+    int* output = new int[vector_size * 4];
+    mat_to_vec(grey, img_vec);
+    zoon_cuda(img_vec, grey.rows, grey.cols, grey.channels(),  output);
+    Mat img_result = vec_to_mat(output, grey.rows*2, grey.cols*2);
+
+    show_vec(img_vec, 20);
+    cout << endl;
+    show_vec(output, 400);
+
+    imshow("Image low resolution", grey);                    waitKey(0);
+    imshow("Image high resolution", img_result);            waitKey(0);
+    
+}
+
 int main() {    
     // PREGUNTA 1
     Mat img = imread("D:\\CUDA\\HelloCUDAopenCV\\lena.jpg");
@@ -173,7 +228,7 @@ int main() {
             0.04, 0.04, 0.04, 0.04, 0.04,
             0.04, 0.04, 0.04, 0.04, 0.04
     }; // mean
-    convolutions(img, kernel, 5, 5);
+    //convolutions(img, kernel, 5, 5);
 
     img = imread("D:\\CUDA\\HelloCUDAopenCV\\sub_10.jpg");
     float kernel_sobel[] = {
@@ -183,7 +238,16 @@ int main() {
             2, 1, 0, -1, -2,
             2, 1, 0, -1, -2,
     };
-    convolutions(img, kernel_sobel, 5, 5);
+    //convolutions(img, kernel_sobel, 5, 5);
+    
+
+    // PREGUNTA 6
+    img = imread("D:\\CUDA\\HelloCUDAopenCV\\orange.jpg");
+    zoon(img);
+
+
+
+
     return 0;
 
 }

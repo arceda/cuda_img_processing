@@ -85,6 +85,7 @@
     <CudaCompile Include="3_global.cu" />
     <CudaCompile Include="4_arithmetics.cu" />
     <CudaCompile Include="5_conv.cu" />
+    <CudaCompile Include="6_zoon.cu" />
     <CudaCompile Include="kernel.cu" />
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +94,7 @@
     <ClInclude Include="3_global.h" />
     <ClInclude Include="4_arithmetics.h" />
     <ClInclude Include="5_conv.h" />
+    <ClInclude Include="6_zoon.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +102,7 @@
     <Image Include="lena.jpg" />
     <Image Include="lena2.jpg" />
     <Image Include="leon.jpg" />
+    <Image Include="orange.jpg" />
     <Image Include="sub_10.jpg" />
     <Image Include="sub_11.jpg" />
   </ItemGroup>

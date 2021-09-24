@@ -49,10 +49,13 @@ void conv_cuda(	int* img, float* kernel, int rows, int cols, int channels,
 	cudaMemcpy(d_img, img, size, cudaMemcpyHostToDevice);
 	cudaMemcpy(d_kernel, kernel, sizeof(float) * kernel_rows * kernel_cols, cudaMemcpyHostToDevice);
 		
-	dim3 dimGrid(ceil((float)cols / 16), ceil((float)rows / 16));
-	dim3 dimBlock(16, 16, 1);
-		
-	conv << <dimGrid, dimBlock >> > (d_img, d_kernel, d_output,
+	dim3 num_blocks(ceil((float)cols / 16), ceil((float)rows / 16));
+	dim3 threads_per_block(16, 16, 1);
+	//int num_blocks = rows;
+	//int threads_per_block = ((length + num_blocks) / num_blocks);
+	//cout << num_blocks << " " << threads_per_block << endl;
+	//cout << cols << " " << rows << " " << ceil((float)cols / 16) << " " << ceil((float)rows / 16) << endl;
+	conv << <num_blocks, threads_per_block >> > (d_img, d_kernel, d_output,
 		channels, cols, rows, kernel_rows, kernel_cols);
 	
 	cudaMemcpy(output, d_output, size, cudaMemcpyDeviceToHost);
