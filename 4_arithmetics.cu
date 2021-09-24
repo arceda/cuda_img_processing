@@ -1,5 +1,5 @@
 
-#include "2_equalize.h"
+#include "4_arithmetics.h"
 
 #define INTENSITIES 256
 

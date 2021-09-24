@@ -154,6 +154,7 @@ Mat vec_1d_to_mat(int* data, int rows, int cols) {
 }
 
 // convierte un Mat en un vector de enteros, este vector contine tambien todos los canales
+// cada canal esta separado
 void mat_to_vec_1d(Mat img, int* data) {
     int vector_size = img.rows * img.cols;    
     //cout << "rows:" << img.rows << "cols:" << img.cols << endl;
@@ -170,6 +171,7 @@ void mat_to_vec_1d(Mat img, int* data) {
         }
     }
 }
+
 
 void histDisplay(int histogram[], const char* name)
 {

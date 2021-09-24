@@ -84,6 +84,7 @@
     <CudaCompile Include="2_equalize.cu" />
     <CudaCompile Include="3_global.cu" />
     <CudaCompile Include="4_arithmetics.cu" />
+    <CudaCompile Include="5_conv.cu" />
     <CudaCompile Include="kernel.cu" />
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +92,7 @@
     <ClInclude Include="2_equalize.h" />
     <ClInclude Include="3_global.h" />
     <ClInclude Include="4_arithmetics.h" />
+    <ClInclude Include="5_conv.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>

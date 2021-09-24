@@ -3,6 +3,7 @@
 #include "2_equalize.h"
 #include "3_global.h"
 #include "4_arithmetics.h"
+#include "5_conv.h"
 #include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -129,6 +130,19 @@ void arithmetics(Mat img_1, Mat img_2) {
     imshow("div", img_div);    waitKey(0);
 }
 
+void convolutions(Mat img, int *kernel) {
+    int vector_size = img.rows * img.cols;
+    int* img_vec = new int[vector_size * 3];    
+    int* output = new int[vector_size * 3];
+    
+    mat_to_vec_1d(img, img_vec);         
+    conv_cuda(img_vec, kernel, img.rows, img.cols, img.channels(), output);
+    Mat img_result = vec_1d_to_mat(output, img.rows, img.cols);    
+
+    imshow("Image", img);               waitKey(0);
+    imshow("New Image", img_result);    waitKey(0);
+}
+
 int main() {    
     // PREGUNTA 1
     Mat img = imread("D:\\CUDA\\HelloCUDAopenCV\\lena.jpg");
@@ -147,8 +161,13 @@ int main() {
     Mat img_2 = imread("D:\\CUDA\\HelloCUDAopenCV\\aqp.jpg");
     Mat img_3 = imread("D:\\CUDA\\HelloCUDAopenCV\\sub_10.jpg");
     Mat img_4 = imread("D:\\CUDA\\HelloCUDAopenCV\\sub_11.jpg");
-    arithmetics(img_1, img_2);
-    arithmetics(img_3, img_4);
+    //arithmetics(img_1, img_2);
+    //arithmetics(img_3, img_4);
+
+    // PREGUNTA 5
+    img = imread("D:\\CUDA\\HelloCUDAopenCV\\lena.jpg");
+    int kernel[] = { 0.1, 0.1, 0.1,   0.1, 0.1, 0.1,    0.1, 0.1, 0.1 }; // mean
+    convolutions(img, kernel);
 
     return 0;
 
