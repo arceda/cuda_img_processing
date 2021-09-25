@@ -88,6 +88,7 @@
     <CudaCompile Include="6_zoon.cu" />
     <CudaCompile Include="7_geometrics.cu" />
     <CudaCompile Include="8_search.cu" />
+    <CudaCompile Include="9_optic_flow.cu" />
     <CudaCompile Include="kernel.cu" />
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +100,7 @@
     <ClInclude Include="6_zoon.h" />
     <ClInclude Include="7_geometrics.h" />
     <ClInclude Include="8_search.h" />
+    <ClInclude Include="9_optic_flow.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +111,8 @@
     <Image Include="lena2.jpg" />
     <Image Include="leon.jpg" />
     <Image Include="orange.jpg" />
+    <Image Include="sub_0.jpg" />
+    <Image Include="sub_1.jpg" />
     <Image Include="sub_10.jpg" />
     <Image Include="sub_11.jpg" />
   </ItemGroup>

@@ -7,6 +7,8 @@
 #include "6_zoon.h"
 #include "7_geometrics.h"
 #include "8_search.h"
+#include "9_optic_flow.h"
+
 #include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -291,6 +293,33 @@ void search_pattern(Mat img, Mat img_pattern) {
     imshow("Patterns finded", new_output_img);  waitKey(0);
 }
 
+void optic_flow(Mat img_1, Mat img_2) {
+
+    //optical_flow_analysis(img_1, img_2, 20);
+    optical_flow_analysis_cuda(img_1, img_2, 20);
+
+
+    /*Mat gray_1, gray_2;
+    cvtColor(img_1, gray_1, COLOR_BGR2GRAY);
+    cvtColor(img_2, gray_2, COLOR_BGR2GRAY);
+    int vector_size = gray_1.rows * gray_1.cols * gray_1.channels();
+
+    int* img_vec_1 = new int[vector_size];
+    int* img_vec_2 = new int[vector_size];    
+    int* output = new int[gray_1.rows * gray_1.cols * gray_1.channels() * 2];
+    
+    mat_to_vec(gray_1, img_vec_1);
+    mat_to_vec(gray_2, img_vec_2);
+    optic_flow_cuda(img_vec_1, img_vec_2,
+        gray_1.rows, gray_1.cols, gray_1.channels(), output);
+    Mat img_result = vec_to_mat(output, gray_1.rows, gray_1.cols);
+
+   
+    imshow("Frame 1", img_1);    waitKey(0);
+    imshow("Frame 2", img_2);    waitKey(0);    
+    imshow("Optic flow", img_result);  waitKey(0);*/
+}
+
 int main() {    
     // PREGUNTA 1
     Mat img = imread("D:\\CUDA\\HelloCUDAopenCV\\lena.jpg");
@@ -348,7 +377,13 @@ int main() {
     // PREGUNTA 8
     img = imread("D:\\CUDA\\HelloCUDAopenCV\\clouds.jpg");
     Mat img_pattern = imread("D:\\CUDA\\HelloCUDAopenCV\\cloud.jpg");
-    search_pattern(img, img_pattern);
+    //search_pattern(img, img_pattern);
+
+    // PREGUNTA 9
+    img_1 = imread("D:\\CUDA\\HelloCUDAopenCV\\sub_0.jpg");
+    img_2 = imread("D:\\CUDA\\HelloCUDAopenCV\\sub_1.jpg");
+
+    optic_flow(img_1, img_2);
 
     return 0;
 
