@@ -295,6 +295,9 @@ void search_pattern(Mat img, Mat img_pattern) {
 
 void optic_flow(Mat img_1, Mat img_2) {
 
+    imshow("Frame 1", img_1);    waitKey(0);
+    imshow("Frame 2", img_2);    waitKey(0);
+
     //optical_flow_analysis(img_1, img_2, 20);
     optical_flow_analysis_cuda(img_1, img_2, 20);
 

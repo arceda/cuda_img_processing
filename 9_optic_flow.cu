@@ -519,11 +519,11 @@ void optical_flow_analysis_cuda(Mat mat1, Mat mat2, int iterations, int avg_wind
 	string window2 = "Second image";
 	string window3 = "Third image";
 
-	namedWindow(window1, WINDOW_AUTOSIZE);
-	imshow(window1, U);
+	//namedWindow(window1, WINDOW_AUTOSIZE);
+	//imshow(window1, U);
 
-	namedWindow(window2, WINDOW_AUTOSIZE);
-	imshow(window2, V);
+	//namedWindow(window2, WINDOW_AUTOSIZE);
+	//imshow(window2, V);
 
 	namedWindow(window3, WINDOW_AUTOSIZE);
 	imshow(window3, img);
