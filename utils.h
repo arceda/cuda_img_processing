@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <cuda_runtime.h>
 #include <iostream>
+#include <vector>
+#include <numeric>
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -260,8 +262,23 @@ void PrintMatrix(float* AtoF)
     printf("f = %f ", AtoF[5]);
 }
 
-
-
+// retorna los bb a partir de una imagen. La imagen es de color negro y tiene pixeles pintados donde hay objetos detectados
+vector< vector<float> > get_bb(Mat img, int rows, int cols, int w_rows, int w_cols) {
+    vector< vector<float> > bounding_boxes;
+    int pixel_value;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            pixel_value = (int)(img.at<Vec3b>(i, j)[1]); // green
+            if (pixel_value > 0) {
+                vector<float> pos;
+                pos.push_back(i);
+                pos.push_back(j);
+                bounding_boxes.push_back( pos );
+            }
+        }
+    }
+    return bounding_boxes;
+}
 
 
 

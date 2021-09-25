@@ -14,13 +14,11 @@ __global__ void search(	int* d_img, int* d_output, int* d_pattern, int channels,
 	float acc;
 
 
-
+	//acc = 0;
 	for (int k = 0; k < channels; k++) {
-
 		// mal, creamos un histograma del patron
 		int hist_window[255];
-		for (int index = 0; index < 256; index++) hist_window[index] = 0;
-		
+		for (int index = 0; index < 256; index++) hist_window[index] = 0;		
 
 		// creamos un histograma para cada ventana
 		int hist_pattern[256];
@@ -31,7 +29,7 @@ __global__ void search(	int* d_img, int* d_output, int* d_pattern, int channels,
 		d_output[(row * cols + col) + length * k] = 0;
 
 		if (row < rows && col < cols) {
-			//acc = 0;
+			acc = 0;
 			int start_row = row - radius_y;
 			int start_col = col - radius_x;
 
@@ -42,10 +40,7 @@ __global__ void search(	int* d_img, int* d_output, int* d_pattern, int channels,
 
 					hist_pattern[d_pattern[(i * cols_pattern + j) + length_pattern * k]] += 1;
 
-					if (current_row >= 0 && current_row < rows && current_col >= 0 && current_col < cols) {
-						//float diff =	d_img[(current_row * cols + current_col) + length * k] - 
-						//				d_pattern[(i * cols_pattern + j) + length_pattern * k];
-						//acc += diff * diff;
+					if (current_row >= 0 && current_row < rows && current_col >= 0 && current_col < cols) {						
 						hist_window[d_img[(current_row * cols + current_col) + length * k]] += 1;
 					}
 					//else acc = 0;
@@ -53,8 +48,8 @@ __global__ void search(	int* d_img, int* d_output, int* d_pattern, int channels,
 			}
 
 			// comparamos los histogramas
-			acc = 0;
-			for (int i = 0; i < 256; i++) 
+			//acc = 0;
+			for (int i = 0; i < 256; i++)
 				acc += (hist_pattern[i] - hist_window[i]) * (hist_pattern[i] - hist_window[i]);
 
 			float error = acc / (rows_pattern * cols_pattern);
@@ -67,8 +62,14 @@ __global__ void search(	int* d_img, int* d_output, int* d_pattern, int channels,
 		}
 
 				
-	}
-	
+	}	
+
+	/*float error = acc / (rows_pattern * cols_pattern * channels);
+	if (error < 40) {
+		d_output[(row * cols + col) + length * 2] = 255;
+		//d_num_boxes += 1;
+		atomicAdd(&(d_num_boxes[0]), 1);
+	}*/
 }
 
 

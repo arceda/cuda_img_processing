@@ -236,11 +236,59 @@ void search_pattern(Mat img, Mat img_pattern) {
                             img_pattern.rows, img_pattern.cols,
                             img_input.channels(), output, &num_boxes);
     Mat img_result = vec_1d_to_mat(output, img_input.rows, img_input.cols);
-    cout << "Num bozes : " << num_boxes <<endl;
+
+    // find contours ////////////////////////////////////////////////////////////////////////////////////////
+    Mat new_output_img = img_input.clone();
+    Mat gray_result, binary_result;
+    cvtColor(img_result, gray_result, COLOR_BGR2GRAY);
+    threshold(gray_result, binary_result, 100, 255, THRESH_BINARY);
+
+    RNG rng(12345);
+    vector<vector<Point> > contours;
+    findContours(binary_result, contours, RETR_TREE, CHAIN_APPROX_SIMPLE);
+    vector<vector<Point> > contours_poly(contours.size());
+    vector<Rect> boundRect(contours.size());
+    vector<Point2f>centers(contours.size());
+    vector<float>radius(contours.size());
+    for (size_t i = 0; i < contours.size(); i++)
+    {
+        approxPolyDP(contours[i], contours_poly[i], 3, true);
+        boundRect[i] = boundingRect(contours_poly[i]);
+        minEnclosingCircle(contours_poly[i], centers[i], radius[i]);
+    }
+    Mat drawing = Mat::zeros(binary_result.size(), CV_8UC3);
+    for (size_t i = 0; i < contours.size(); i++)
+    {
+        Scalar color = Scalar(rng.uniform(0, 256), rng.uniform(0, 256), rng.uniform(0, 256));
+        //drawContours(drawing, contours_poly, (int)i, color);
+        //rectangle(drawing, boundRect[i].tl(), boundRect[i].br(), color, 2);
+        //circle(drawing, centers[i], (int)radius[i], color, 2);
+        int width = boundRect[i].br().x - boundRect[i].tl().x;
+        int height = boundRect[i].br().y - boundRect[i].tl().y;        
+        int area = width * height;
+        cout << area <<endl;
+
+        int center_x = boundRect[i].tl().x + width / 2;
+        int center_y = boundRect[i].tl().y + height / 2;
+        Point new_potin_tl(center_x - img_pattern.cols/2, center_y - img_pattern.rows/2);
+        Point new_potin_br(center_x + img_pattern.cols / 2, center_y + img_pattern.rows / 2);
+
+        if (area > 150) {
+            //rectangle(drawing, boundRect[i].tl(), boundRect[i].br(), color, 2);
+            //rectangle(new_output_img, boundRect[i].tl(), boundRect[i].br(), color, 2);
+            rectangle(new_output_img, new_potin_tl, new_potin_br, cv::Scalar(0, 0, 255), 2);
+        }
+        
+        
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+   
 
     imshow("Image original", img_input);    waitKey(0);
     imshow("Pattern", img_pattern);         waitKey(0);
-    imshow("Patterns finded", img_result);  waitKey(0);
+    imshow("Patterns finded", new_output_img);  waitKey(0);
 }
 
 int main() {    
